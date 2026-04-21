@@ -14,7 +14,8 @@ const server = http.createServer(app);
 // Initialize socket.io server
 export const io = new Server(server, {
     cors: {
-        origin: process.env.CLIENT_URL,
+
+        origin:process.env.CLIENT_URL,
         credentials: true
     }
 })
@@ -44,13 +45,21 @@ app.use(cors());
 
 // Routes setup
 app.use("/api/auth", userRouter)
-app.use('/api/status', (req, res) => { res.send("Server is Live!") });
+app.use('/api/status', (req, res) => { 
+    res.json({ 
+        status: "Server is Live!",
+        mongoDBConnected: require("mongoose").connection.readyState === 1
+    });
+});
 app.use('/api/messages', messageRouter);
 
 // Connect to mongoDB
+console.log("🚀 Starting server...");
 await connectDB();
 
 const PORT = process.env.PORT || 5000
 
 // Start the server
-server.listen(PORT, () => { console.log(`Server is running on port ${PORT}`); });
+server.listen(PORT, () => { 
+    console.log(`✅ Server is running on port ${PORT}`);
+});
