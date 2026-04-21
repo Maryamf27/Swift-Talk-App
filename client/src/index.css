@@ -10,6 +10,6 @@
   display: none;
 }
 html, body, #root {
-  background: url(./src/assets/bgImage.svg);
+  background: url(/assets/bgImage.svg);
   object-fit: contain;
 }
